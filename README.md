@@ -99,3 +99,40 @@ http {
   
 events {}
 ```
+
+## Regural Exoression
+```
+nginx.conf
+
+http {
+  
+  include mime.types;
+  
+  server {
+    listen 8080;
+    root /var/mysite;
+    
+    location /fruits {
+      root /var/mysite;
+    }
+    
+    location /carbs {
+      alias /var/mysite/fruits;
+    }
+    
+    location /vegetables {
+      root /var/mysite;
+      try_files /vegetables/veggies.html /index.html =404;
+      # it looks for veggies.html, if it does not found it, server the /var/mysite/index.html and else 404.
+    }
+    
+    location ~* /count/[0-9] {
+      root /var/mysite;
+      try_files /index.html =404;
+    }
+  }
+}
+  
+events {}
+```
+
