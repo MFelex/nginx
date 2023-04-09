@@ -177,3 +177,32 @@ http {
   
 events {}
 ```
+
+## Load Balancer
+Run four docker containers on localhost:1111 to :4444 and nginx choose one of them through Round Robin algorithm.
+```
+nginx.conf
+
+http {
+  
+  include mime.types;
+  
+  upstream backendserver {
+    server 127.0.0.1:1111
+    server 127.0.0.1:2222
+    server 127.0.0.1:3333
+    server 127.0.0.1:4444
+  }
+  
+  server {
+    listen 8080;
+    
+    location / {
+      proxy_pass http://backendserver/;
+    }
+    
+  }
+}
+  
+events {}
+```
